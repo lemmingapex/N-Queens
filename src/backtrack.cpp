@@ -99,7 +99,7 @@ int Backtrack() {
 int main(int argc, const char *argv[]) {
 	if(argc > 2) {
 		cerr << "Usage:\n\t" << argv[0] << endl;
-		cerr << "\t" << argv[0] << " <Number of Queens>" << endl;
+		cerr << "\t" << argv[0] << " [Number of Queens]" << endl;
 		exit(1);
 	}	else if(argc == 2) {
 		N = atoi(argv[1]);

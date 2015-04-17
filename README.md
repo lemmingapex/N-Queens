@@ -15,11 +15,11 @@ make
 
 If no inputs are given, the following methods have reasonable defaults.
 
-./Backtrack <Number of Queens>
+./Backtrack [Number of Queens]
 
-./Genetic <Number of Queens> <Population Size> <Survival Rate> <Mutation Rate>
+./Genetic [Number of Queens] [Population Size] [Survival Rate] [Mutation Rate]
 
-./MinimumConflict <Number of Queens>
+./MinimumConflict [Number of Queens]
 
 ## Thoughts
 

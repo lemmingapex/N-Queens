@@ -179,8 +179,8 @@ int main(int argc, const char *argv[]) {
 		MutationRate = atof(argv[4]);
 	} else if(argc > 2) {
 		cerr << "Usage:\n\t" << argv[0] << endl;
-		cerr << "\t" << argv[0] << " <Number of Queens>" << endl;
-		cerr << "\t" << argv[0] << " <Number of Queens> <Population Size> <Survival Rate> <Mutation Rate>" << endl;
+		cerr << "\t" << argv[0] << " [Number of Queens]" << endl;
+		cerr << "\t" << argv[0] << " [Number of Queens] [Population Size] [Survival Rate] [Mutation Rate]" << endl;
 		exit(1);
 	} else {
 		if(argc == 2) {
