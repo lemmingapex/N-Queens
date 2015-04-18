@@ -15,7 +15,7 @@ int* upperDiagCount;
 int* lowerDiagCount;
 
 // runtime: n
-int BoardConflicts(int upperBound, int exrow) {
+int BoardConflicts(int excludeRow) {
 	int conflicts=0;
 
 	for(int i=0; i<2*N-1; i++) {
@@ -25,13 +25,14 @@ int BoardConflicts(int upperBound, int exrow) {
 		upperDiagCount[i]=lowerDiagCount[i]=0;
 	}
 
-	for(int i=0; i<upperBound; i++) {
-		if(i!=exrow) {
+	for(int i=0; i<N; i++) {
+		if(i != excludeRow) {
 			colCount[queens[i]] += 1;
 			upperDiagCount[queens[i]+i] += 1;
 			lowerDiagCount[(N-queens[i])+i-1] += 1;
 		}
 	}
+
 	for(int i=0; i<2*N-1; i++) {
 		if(i<N) {
 			conflicts += ((colCount[i]-1)*colCount[i])/2;
@@ -40,6 +41,10 @@ int BoardConflicts(int upperBound, int exrow) {
 		conflicts += ((lowerDiagCount[i]-1)*lowerDiagCount[i])/2;
 	}
 	return conflicts;
+}
+
+int BoardConflicts() {
+	return BoardConflicts(-1);
 }
 
 /*
@@ -69,6 +74,13 @@ void Initialize() {
 	upperDiagCount = new int[(2*N)-1];
 	lowerDiagCount = new int[(2*N)-1];
 
+	for(int i=0; i<2*N-1; i++) {
+		if(i<N) {
+			colCount[i]=0;
+		}
+		upperDiagCount[i]=lowerDiagCount[i]=0;
+	}
+
 	vector<int> minConflictCols;
 	int minConflicts=INF;
 	int tempConflicts;
@@ -76,11 +88,14 @@ void Initialize() {
 	// choose first queen randomly
 	queens[0] = rand()%N;
 
+	colCount[queens[0]] += 1;
+	upperDiagCount[queens[0]+0] += 1;
+	lowerDiagCount[(N-queens[0])+0-1] += 1;
+
 	// i=row index
 	for(int i=1; i<N; i++) {
-		BoardConflicts(i-1, -1);
 		minConflictCols.clear();
-		minConflicts=INF;
+		minConflicts = INF;
 		// j=col index
 		for(int j=0; j<N; j++) {
 			tempConflicts = ((colCount[j]+1)*colCount[j])/2;
@@ -96,6 +111,10 @@ void Initialize() {
 			}
 		}
 		queens[i] = minConflictCols[rand()%minConflictCols.size()];
+
+		colCount[queens[i]] += 1;
+		upperDiagCount[queens[i]+i] += 1;
+		lowerDiagCount[(N-queens[i])+i-1] += 1;
 	}
 }
 
@@ -110,7 +129,7 @@ void Print() {
 		}
 		cout << "|\n";
 	}
-	cout << "Conflicts: " << BoardConflicts(N, -1) << "\n\n";
+	cout << "Conflicts: " << BoardConflicts() << "\n\n";
 }
 
 // calculates row with most conflicts
@@ -146,7 +165,7 @@ void MinConflicts() {
 	vector<int> minConflictCols;
 
 	//Print();
-	BoardConflicts(N, highestConflictRow);
+	BoardConflicts(highestConflictRow);
 
 	// i=col index
 	for(int i=0; i<N; i++) {
@@ -188,7 +207,7 @@ int main(int argc, const char *argv[]) {
 		Print();
 	}
 
-	int previousConflicts = BoardConflicts(N, -1);
+	int previousConflicts = BoardConflicts();
 	int newConflicts;
 
 	cout << "Initial conflicts: " << previousConflicts << endl << endl;
@@ -201,7 +220,7 @@ int main(int argc, const char *argv[]) {
 	while(previousConflicts != 0)	{
 		MinConflicts();
 		steps++;
-		newConflicts = BoardConflicts(N, -1);
+		newConflicts = BoardConflicts();
 		if(previousConflicts == newConflicts) {
 			count++;
 			if(count>1) {
