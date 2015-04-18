@@ -6,9 +6,9 @@ using namespace std;
 int N = 8;
 int* queens;
 
-int* colConflict;
-int* upperDiagConflict;
-int* lowerDiagConflict;
+int* colCount;
+int* upperDiagCount;
+int* lowerDiagCount;
 
 // runtime: n
 int BoardConflicts() {
@@ -16,24 +16,24 @@ int BoardConflicts() {
 
 	for(int i=0; i<2*N-1; i++) {
 		if(i<N) {
-			colConflict[i]=0;
+			colCount[i]=0;
 		}
-		upperDiagConflict[i]=lowerDiagConflict[i]=0;
+		upperDiagCount[i]=lowerDiagCount[i]=0;
 	}
 
 	for(int i=0; i<N; i++) {
 			if(queens[i] > -1) {
-				colConflict[queens[i]] += 1;
-				upperDiagConflict[queens[i]+i] += 1;
-				lowerDiagConflict[(N-queens[i])+i-1] += 1;
+				colCount[queens[i]] += 1;
+				upperDiagCount[queens[i]+i] += 1;
+				lowerDiagCount[(N-queens[i])+i-1] += 1;
 			}
 	}
 	for(int i=0; i<2*N-1; i++) {
 		if(i<N) {
-			conflicts += ((colConflict[i]-1)*colConflict[i])>>1;
+			conflicts += ((colCount[i]-1)*colCount[i])/2;
 		}
-		conflicts += ((upperDiagConflict[i]-1)*upperDiagConflict[i])>>1;
-		conflicts += ((lowerDiagConflict[i]-1)*lowerDiagConflict[i])>>1;
+		conflicts += ((upperDiagCount[i]-1)*upperDiagCount[i])/2;
+		conflicts += ((lowerDiagCount[i]-1)*lowerDiagCount[i])/2;
 	}
 	return conflicts;
 }
@@ -43,9 +43,9 @@ void Initialize() {
 	queens = new int[N];
 	queens[0] = 0;
 
-	colConflict = new int[N];
-	upperDiagConflict = new int[(2*N)-1];
-	lowerDiagConflict = new int[(2*N)-1];
+	colCount = new int[N];
+	upperDiagCount = new int[(2*N)-1];
+	lowerDiagCount = new int[(2*N)-1];
 
 	// i=row index
 	for(int i=1; i<N; i++) {

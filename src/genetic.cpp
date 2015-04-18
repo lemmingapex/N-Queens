@@ -44,22 +44,22 @@ class Board {
 		}
 
 		int Conflicts() {
-			int rowConflict[N]={0};
-			int upperDiagConflict[(2*N)-1]={0};
-			int lowerDiagConflict[(2*N)-1]={0};
+			int colCount[N]={0};
+			int upperDiagCount[(2*N)-1]={0};
+			int lowerDiagCount[(2*N)-1]={0};
 
 			for(int i=0; i<N; i++) {
-				rowConflict[queens[i]] += 1;
-				upperDiagConflict[queens[i]+i]+=1;
-				lowerDiagConflict[(N-queens[i])+i-1]+=1;
+				colCount[queens[i]] += 1;
+				upperDiagCount[queens[i]+i]+=1;
+				lowerDiagCount[(N-queens[i])+i-1]+=1;
 			}
 			int conflicts = 0;
 			for(int i=0; i<2*N-1; i++) {
 				if(i<N) {
-					conflicts += ((rowConflict[i]-1)*rowConflict[i])/2;
+					conflicts += ((colCount[i]-1)*colCount[i])/2;
 				}
-				conflicts += ((upperDiagConflict[i]-1)*upperDiagConflict[i])/2;
-				conflicts += ((lowerDiagConflict[i]-1)*lowerDiagConflict[i])/2;
+				conflicts += ((upperDiagCount[i]-1)*upperDiagCount[i])/2;
+				conflicts += ((lowerDiagCount[i]-1)*lowerDiagCount[i])/2;
 			}
 			return conflicts;
 		}

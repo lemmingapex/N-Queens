@@ -10,9 +10,9 @@ const int INF = numeric_limits<int>::max();
 int N = 8;
 int* queens;
 
-int* colConflict;
-int* upperDiagConflict;
-int* lowerDiagConflict;
+int* colCount;
+int* upperDiagCount;
+int* lowerDiagCount;
 
 // runtime: n
 int BoardConflicts(int upperBound, int exrow) {
@@ -20,24 +20,24 @@ int BoardConflicts(int upperBound, int exrow) {
 
 	for(int i=0; i<2*N-1; i++) {
 		if(i<N) {
-			colConflict[i]=0;
+			colCount[i]=0;
 		}
-		upperDiagConflict[i]=lowerDiagConflict[i]=0;
+		upperDiagCount[i]=lowerDiagCount[i]=0;
 	}
 
 	for(int i=0; i<upperBound; i++) {
 		if(i!=exrow) {
-			colConflict[queens[i]] += 1;
-			upperDiagConflict[queens[i]+i] += 1;
-			lowerDiagConflict[(N-queens[i])+i-1] += 1;
+			colCount[queens[i]] += 1;
+			upperDiagCount[queens[i]+i] += 1;
+			lowerDiagCount[(N-queens[i])+i-1] += 1;
 		}
 	}
 	for(int i=0; i<2*N-1; i++) {
 		if(i<N) {
-			conflicts += ((colConflict[i]-1)*colConflict[i])>>1;
+			conflicts += ((colCount[i]-1)*colCount[i])/2;
 		}
-		conflicts += ((upperDiagConflict[i]-1)*upperDiagConflict[i])>>1;
-		conflicts += ((lowerDiagConflict[i]-1)*lowerDiagConflict[i])>>1;
+		conflicts += ((upperDiagCount[i]-1)*upperDiagCount[i])/2;
+		conflicts += ((lowerDiagCount[i]-1)*lowerDiagCount[i])/2;
 	}
 	return conflicts;
 }
@@ -65,9 +65,9 @@ int QueenConflicts(int row) {
 void Initialize() {
 	queens = new int[N];
 
-	colConflict = new int[N];
-	upperDiagConflict = new int[(2*N)-1];
-	lowerDiagConflict = new int[(2*N)-1];
+	colCount = new int[N];
+	upperDiagCount = new int[(2*N)-1];
+	lowerDiagCount = new int[(2*N)-1];
 
 	vector<int> minConflictCols;
 	int minConflicts=INF;
@@ -83,9 +83,9 @@ void Initialize() {
 		minConflicts=INF;
 		// j=col index
 		for(int j=0; j<N; j++) {
-			tempConflicts = ((colConflict[j]+1)*colConflict[j])>>1;
-			tempConflicts += ((upperDiagConflict[j+i]+1)*upperDiagConflict[j+i])>>1;
-			tempConflicts += ((lowerDiagConflict[(N-j)+i-1]+1)*lowerDiagConflict[(N-j)+i-1])>>1;
+			tempConflicts = ((colCount[j]+1)*colCount[j])/2;
+			tempConflicts += ((upperDiagCount[j+i]+1)*upperDiagCount[j+i])/2;
+			tempConflicts += ((lowerDiagCount[(N-j)+i-1]+1)*lowerDiagCount[(N-j)+i-1])/2;
 
 			if(tempConflicts < minConflicts) {
 				minConflicts=tempConflicts;
@@ -121,9 +121,9 @@ int HighestConflicts() {
 	vector<int> maxConflictRows;
 
 	for(int i=0; i<N; i++) {
-		tempConflicts = ((colConflict[queens[i]]-1)*colConflict[queens[i]])>>1;
-		tempConflicts += ((upperDiagConflict[queens[i]+i]-1)*upperDiagConflict[queens[i]+i])>>1;
-		tempConflicts += ((lowerDiagConflict[(N-queens[i])+i-1]-1)*lowerDiagConflict[(N-queens[i])+i-1])>>1;
+		tempConflicts = ((colCount[queens[i]]-1)*colCount[queens[i]])/2;
+		tempConflicts += ((upperDiagCount[queens[i]+i]-1)*upperDiagCount[queens[i]+i])/2;
+		tempConflicts += ((lowerDiagCount[(N-queens[i])+i-1]-1)*lowerDiagCount[(N-queens[i])+i-1])/2;
 
 		if(tempConflicts > rowConflicts) {
 			rowConflicts=tempConflicts;
@@ -150,9 +150,9 @@ void MinConflicts() {
 
 	// i=col index
 	for(int i=0; i<N; i++) {
-		tempConflicts = ((colConflict[i]+1)*colConflict[i])>>1;
-		tempConflicts += ((upperDiagConflict[i+highestConflictRow]+1)*upperDiagConflict[i+highestConflictRow])>>1;
-		tempConflicts += ((lowerDiagConflict[(N-i)+highestConflictRow-1]+1)*lowerDiagConflict[(N-i)+highestConflictRow-1])>>1;
+		tempConflicts = ((colCount[i]+1)*colCount[i])/2;
+		tempConflicts += ((upperDiagCount[i+highestConflictRow]+1)*upperDiagCount[i+highestConflictRow])/2;
+		tempConflicts += ((lowerDiagCount[(N-i)+highestConflictRow-1]+1)*lowerDiagCount[(N-i)+highestConflictRow-1])/2;
 
 		if(tempConflicts < minConflicts) {
 			minConflicts=tempConflicts;
