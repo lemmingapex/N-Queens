@@ -7,7 +7,7 @@ Methods:
 * [Genetic algorithm](http://en.wikipedia.org/wiki/Genetic_algorithm)
 * Minimum-conflicts heuristic
 
-##Compile It
+## Compile It
 
 make
 
